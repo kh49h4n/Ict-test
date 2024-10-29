@@ -1,0 +1,124 @@
+<TradingStrategy>
+    <Name>ICT_Smart_Money_Concept</Name>
+    <Description>
+        This strategy is based on the Intra City Trader (ICT) smart money concept, which focuses on market maker models, liquidity, and manipulation patterns.
+    </Description>
+    <Parameters>
+        <Parameter>
+            <Name>Timeframe</Name>
+            <Value>H1</Value>
+        </Parameter>
+        <Parameter>
+            <Name>RiskPercentage</Name>
+            <Value>1</Value>
+            <Unit>percent</Unit>
+        </Parameter>
+        <Parameter>
+            <Name>StopLoss</Name>
+            <Value>30</Value>
+            <Unit>pips</Unit>
+        </Parameter>
+        <Parameter>
+            <Name>TakeProfit</Name>
+            <Value>60</Value>
+            <Unit>pips</Unit>
+        </Parameter>
+    </Parameters>
+    <Indicators>
+        <Indicator>
+            <Name>OrderBlock</Name>
+            <Description>Identifies significant areas of support and resistance created by institutional orders.</Description>
+        </Indicator>
+        <Indicator>
+            <Name>LiquidityPool</Name>
+            <Description>Identifies areas where liquidity is likely to be pooled.</Description>
+        </Indicator>
+        <Indicator>
+            <Name>FairValueGap</Name>
+            <Description>Identifies gaps in price that are likely to be filled.</Description>
+        </Indicator>
+    </Indicators>
+    <EntryRules>
+        <Rule>
+            <Condition>
+                <Indicator>OrderBlock</Indicator>
+                <Action>Identify</Action>
+                <Value>Buy</Value>
+                <Description>Enter a buy trade when price touches a bullish order block.</Description>
+            </Condition>
+            <Condition>
+                <Indicator>LiquidityPool</Indicator>
+                <Action>Identify</Action>
+                <Value>Below</Value>
+                <Description>Liquidity pool is below the current price, indicating potential buy liquidity.</Description>
+            </Condition>
+            <Condition>
+                <Indicator>FairValueGap</Indicator>
+                <Action>Identify</Action>
+                <Value>Exists</Value>
+                <Description>There is a fair value gap indicating a potential price fill.</Description>
+            </Condition>
+        </Rule>
+        <Rule>
+            <Condition>
+                <Indicator>OrderBlock</Indicator>
+                <Action>Identify</Action>
+                <Value>Sell</Value>
+                <Description>Enter a sell trade when price touches a bearish order block.</Description>
+            </Condition>
+            <Condition>
+                <Indicator>LiquidityPool</Indicator>
+                <Action>Identify</Action>
+                <Value>Above</Value>
+                <Description>Liquidity pool is above the current price, indicating potential sell liquidity.</Description>
+            </Condition>
+            <Condition>
+                <Indicator>FairValueGap</Indicator>
+                <Action>Identify</Action>
+                <Value>Exists</Value>
+                <Description>There is a fair value gap indicating a potential price fill.</Description>
+            </Condition>
+        </Rule>
+    </EntryRules>
+    <ExitRules>
+        <Rule>
+            <Condition>
+                <Type>TakeProfit</Type>
+                <Value>Reached</Value>
+                <Description>Exit the trade when the take profit level is reached.</Description>
+            </Condition>
+        </Rule>
+        <Rule>
+            <Condition>
+                <Type>StopLoss</Type>
+                <Value>Reached</Value>
+                <Description>Exit the trade when the stop loss level is reached.</Description>
+            </Condition>
+        </Rule>
+        <Rule>
+            <Condition>
+                <Indicator>OrderBlock</Indicator>
+                <Action>Identify</Action>
+                <Value>Opposite</Value>
+                <Description>Exit the trade when price reaches an opposite order block.</Description>
+            </Condition>
+        </Rule>
+    </ExitRules>
+    <RiskManagement>
+        <Rule>
+            <Condition>
+                <Type>MaxDailyLoss</Type>
+                <Value>2</Value>
+                <Unit>percent</Unit>
+                <Description>Stop trading for the day if the maximum daily loss is reached.</Description>
+            </Condition>
+        </Rule>
+        <Rule>
+            <Condition>
+                <Type>MaxTradesPerDay</Type>
+                <Value>5</Value>
+                <Description>Limit the number of trades per day to manage risk.</Description>
+            </Condition>
+        </Rule>
+    </RiskManagement>
+</TradingStrategy>
